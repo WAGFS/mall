@@ -13,6 +13,8 @@
       :title="['流行', '新款', '精选']"
       class="tabControl"
     ></tab-control>
+    <!-- 商品列表 -->
+    <goods-list :goods="goods['pop'].list"></goods-list>
     <ul>
       <li>1</li>
       <li>2</li>
@@ -64,11 +66,12 @@ import RecommendView from "./childrencpns/RecommendView.vue";
 
 import NavBar from "components/common/navbar/NavBar.vue";
 import TabControl from "components/context/tabControl/tabControl.vue";
+import GoodsList from 'components/context/goodsList/goodsList.vue';
 
 import { homeMultidata, getHomeGoods } from "network/home";
 export default {
   name: "home",
-  components: { NavBar, HomeSwiper, RecommendView, FeatureView, TabControl },
+  components: { NavBar, HomeSwiper, RecommendView, FeatureView, TabControl, GoodsList },
   data() {
     return {
       banners: [],
@@ -137,6 +140,7 @@ export default {
 
 .tabControl {
   position: sticky;
+  background: #fff;
   top: 44px;
 }
 </style>
