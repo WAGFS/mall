@@ -2,12 +2,14 @@
   <div id="home">
     <!-- 顶部导航 -->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content"
-     ref="scroll" 
-     @scroll="showBackTop" 
-     :probeType="3"
-     :pullUpLoad="true"
-     @pullingUp="loadMore">
+    <scroll
+      class="content"
+      ref="scroll"
+      @scroll="showBackTop"
+      :probeType="3"
+      :pullUpLoad="true"
+      @pullingUp="loadMore"
+    >
       <!-- 首页轮播图 -->
       <home-swiper :banners="banners"></home-swiper>
       <!-- 推荐 -->
@@ -36,9 +38,10 @@ import NavBar from "components/common/navbar/NavBar.vue";
 import TabControl from "components/context/tabControl/tabControl.vue";
 import GoodsList from "components/context/goodsList/goodsList.vue";
 import Scroll from "components/common/scroll/scroll.vue";
-import BackTop from 'components/context/backTop/backTop.vue';
+import BackTop from "components/context/backTop/backTop.vue";
 
 import { homeMultidata, getHomeGoods } from "network/home";
+import {debounce} from 'common/utils'
 export default {
   name: "home",
   components: {
@@ -70,7 +73,7 @@ export default {
         },
       },
       currentType: "pop",
-      showBack:false
+      showBack: false,
     };
   },
   created() {
@@ -80,6 +83,13 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+  },
+  mounted() {
+    // 监听图片加载完成
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
+    this.$bus.$on("itemImgLoad", () => {
+      refresh();
+    });
   },
   computed: {
     showGoods() {
@@ -103,13 +113,13 @@ export default {
           break;
       }
     },
-    backTop(){
-        this.$refs.scroll.scrollTo(0,0);
+    backTop() {
+      this.$refs.scroll.scrollTo(0, 0);
     },
-    showBackTop(position){
-      this.showBack = position.y <= -1000 ? true : false;
+    showBackTop(position) {
+      this.showBack = position.y <= -1000;
     },
-    loadMore(){
+    loadMore() {
       this.getHomeGoods(this.currentType);
     },
     /**
@@ -132,7 +142,7 @@ export default {
         this.goods[type].page++;
       });
       // 重新绑定上拉加载更多事件
-      this.$refs.scroll && this.$refs.scroll.finish()
+      this.$refs.scroll && this.$refs.scroll.finish();
     },
   },
 };
@@ -159,7 +169,7 @@ export default {
   background: #fff;
   top: 44px;
 }
-.content{
+.content {
   height: calc(100vh - 93px);
   overflow: hidden;
 }
