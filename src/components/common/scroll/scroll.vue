@@ -29,7 +29,7 @@ export default {
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
     });
-    
+
     // 监听滚动事件
     if (this.probeType === 2 || this.probeType === 3) {
       this.scroll.on("scroll", (position) => {
@@ -54,6 +54,9 @@ export default {
     refresh() {
       this.scroll.refresh();
     },
+    getScrollY(){
+        return this.scroll.y ? this.scroll.y : 0;
+    }
   },
 };
 </script>
