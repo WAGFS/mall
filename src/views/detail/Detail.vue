@@ -60,7 +60,7 @@ export default {
       this.paramsInfo = new GoodsParam(data.itemParams.info,data.itemParams.rule)
       // 6.保存评论信息
       this.commentList = data.rate.list;
-      console.log(data.rate);
+      // console.log(data.rate);
     });
   },
   methods: {
