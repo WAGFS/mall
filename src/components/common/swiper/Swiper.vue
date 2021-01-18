@@ -7,6 +7,7 @@
       @touchstart="touchStart"
       @touchmove="touchMove"
       @touchend="touchEnd"
+      ref="swiper"
     >
       <slot></slot>
     </div>
@@ -148,7 +149,7 @@ export default {
      */
     async handleDom() {
       // 获取轮播图容器和轮播图列表
-      let swiperEl = document.querySelector(".swiper");
+      let swiperEl = this.$refs.swiper;
       let slidesEls = swiperEl.getElementsByClassName("slide");
 
       // 保存轮播图图片个数
