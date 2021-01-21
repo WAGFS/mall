@@ -2,7 +2,12 @@
   <div id="detail">
     <!-- 顶部导航 -->
     <nav-bar class="detail-nav"></nav-bar>
-    <scroll class="detail-content" ref="detailScroll" @scroll="monitorY" :probeType="3">
+    <scroll
+      class="detail-content"
+      ref="scroll"
+      @scroll="monitorY"
+      :probeType="3"
+    >
       <!-- 详情页轮播图 -->
       <detail-swiper :imgList="imgList" @imgLoaded="imgLoad"></detail-swiper>
       <!-- 商品信息 -->
@@ -38,8 +43,9 @@ import DetailComment from "./childrencpns/DetailComment.vue";
 
 import Scroll from "components/common/scroll/scroll.vue";
 import GoodsList from "components/context/goodsList/goodsList.vue";
-import BackTop from 'components/context/backTop/backTop.vue';
+import BackTop from "components/context/backTop/backTop.vue";
 
+import { mixins } from "common/mixin";
 import {
   getDetail,
   Goods,
@@ -61,6 +67,9 @@ export default {
     GoodsList,
     BackTop,
   },
+  // 由于this.$refs.scroll在created完成后还未填充数据，所以在mounted中来监听
+  // 防止滚动不了的问题
+  mixins: [mixins],
   data() {
     return {
       iid: null,
@@ -70,9 +79,8 @@ export default {
       detailInfo: {},
       paramsInfo: {},
       commentList: [],
-      goodsList:[],
-      refresh:null,
-      isShowBack:false
+      goodsList: [],
+      isShowBack: false,
     };
   },
   created() {
@@ -96,44 +104,29 @@ export default {
       this.commentList = data.rate.list;
     });
     // 7.请求底部推荐列表
-    this._getRecommend()
+    this._getRecommend();
   },
-  mounted() {
-    // 由于this.$refs.detailScroll在created完成后还未填充数据，所以在mounted中来监听
-    // 防止滚动不了的问题
-    this.refresh = this.debounce(this.$refs.detailScroll.refresh,100);
-    this.$bus.$on('itemImgLoad',()=>{
-      this.refresh();
-    })
-
-  },
+  mounted() {},
   methods: {
     imgLoad() {
       this.refresh();
     },
-    //   防抖
-    debounce(fnc, delay) {
-      let timer;
-      return function (...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-          fnc.apply(this, args);
-        }, delay);
-      };
-    },
-    _getRecommend(){
-      getRecommend().then(res=>{
+    _getRecommend() {
+      getRecommend().then((res) => {
         this.goodsList = res.data.list;
-      })
+      });
     },
     // 回到顶部
-    backTop(){
-      this.$refs.detailScroll.scrollTo(0,0)
+    backTop() {
+      this.$refs.scroll.scrollTo(0, 0);
     },
     // 监听页面是否滚动到指定区域
-    monitorY(position){
-    this.isShowBack = position.y <= -1500 ? true : false;
-    }
+    monitorY(position) {
+      this.isShowBack = position.y <= -1500 ? true : false;
+    },
+  },
+  destroyed() {
+    this.$bus.$off("itemImgLoad", this.itemImgLoad);
   },
 };
 </script>
@@ -153,7 +146,7 @@ export default {
   z-index: 10;
   background-color: #fff;
 }
-.hotRecommend{
+.hotRecommend {
   padding: 10px 15px 0;
   color: var(--color-high-text);
 }

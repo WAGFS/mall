@@ -52,7 +52,7 @@ import Scroll from "components/common/scroll/scroll.vue";
 import BackTop from "components/context/backTop/backTop.vue";
 
 import { homeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+import { mixins } from "common/mixin";
 export default {
   name: "Home",
   components: {
@@ -65,6 +65,8 @@ export default {
     Scroll,
     BackTop,
   },
+  // 监听图片加载完成
+  mixins: [mixins],
   data() {
     return {
       banners: [],
@@ -88,7 +90,7 @@ export default {
       isFixed: false,
       tabControlOffsetTop: null,
       saveY: 0,
-      isStop:false
+      isStop: false,
     };
   },
   created() {
@@ -98,13 +100,6 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
-  },
-  mounted() {
-    // 监听图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    this.$bus.$on("itemImgLoad", () => {
-      refresh();
-    });
   },
   computed: {
     showGoods() {
@@ -177,6 +172,10 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY();
+    // 离开首页时解除对GoodsList图片加载的监听
+    // 通过$off()解绑事件，传入一个参数表示解除所有itemImgLoad事件
+    // 第二个参数为函数，传入第二个参数表示解除对应处理函数的itemImgLoad事件
+    this.$bus.$off("itemImgLoad", this.itemImgLoad);
   },
 };
 </script>
