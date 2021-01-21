@@ -23,12 +23,12 @@ export function formatDate(date, format) {
   weekday[6] = "星期六";
   const formatDate = {
     'yyyy': date.getFullYear(),
-    'MM': date.getMonth() + 1 > 10 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1),
-    'dd': date.getDate() > 10 ? date.getDate() : '0' + date.getDate(),
+    'MM': (date.getMonth() + 1 + '').padStart(2,'0'),
+    'dd': (date.getDate()+'').padStart(2,'0'),
     'DD': weekday[date.getDay()],
-    'hh': date.getHours()> 10 ? date.getHours() : '0' + date.getHours(),
-    'mm': date.getMinutes()> 10 ? date.getMinutes() : '0' + date.getMinutes(),
-    'ss': date.getSeconds()> 10 ? date.getSeconds() : '0' + date.getSeconds()
+    'hh': (date.getHours()+'').padStart(2,'0'),
+    'mm': (date.getMinutes()+'').padStart(2,'0'),
+    'ss': (date.getSeconds()+'').padStart(2,'0')
   }
   let formatDateArray = Object.keys(formatDate);
   let dateFormat = format.split(' ');

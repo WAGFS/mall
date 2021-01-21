@@ -3,12 +3,12 @@
     <!-- 顶部导航 -->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
     <tab-control
-        :title="['流行', '新款', '精选']"
-        @tabClick="tabClick"
-        ref="tabControl1"
-        v-show="isFixed"
-        class="tabControl"
-      ></tab-control>
+      :title="['流行', '新款', '精选']"
+      @tabClick="tabClick"
+      ref="tabControl1"
+      v-show="isFixed"
+      class="tabControl"
+    ></tab-control>
     <scroll
       class="content"
       ref="scroll"
@@ -18,7 +18,10 @@
       @pullingUp="loadMore"
     >
       <!-- 首页轮播图 -->
-      <home-swiper :banners="banners" @swiperImgLoad="swiperImgLoad"></home-swiper>
+      <home-swiper
+        :banners="banners"
+        @swiperImgLoad="swiperImgLoad"
+      ></home-swiper>
       <!-- 推荐 -->
       <recommend-view :recommend="recommends"></recommend-view>
       <!-- 特性 -->
@@ -39,7 +42,7 @@
 </template>
 <script>
 import HomeSwiper from "./childrencpns/HomeSwiper.vue";
-import FeatureView from "./childrencpns/featureView.vue";
+import FeatureView from "./childrencpns/FeatureView";
 import RecommendView from "./childrencpns/RecommendView.vue";
 
 import NavBar from "components/common/navbar/NavBar.vue";
@@ -49,9 +52,9 @@ import Scroll from "components/common/scroll/scroll.vue";
 import BackTop from "components/context/backTop/backTop.vue";
 
 import { homeMultidata, getHomeGoods } from "network/home";
-import {debounce} from 'common/utils'
+import { debounce } from "common/utils";
 export default {
-  name: "home",
+  name: "Home",
   components: {
     NavBar,
     HomeSwiper,
@@ -82,9 +85,10 @@ export default {
       },
       currentType: "pop",
       showBack: false,
-      isFixed:false,
-      tabControlOffsetTop:null,
-      saveY:0
+      isFixed: false,
+      tabControlOffsetTop: null,
+      saveY: 0,
+      isStop:false
     };
   },
   created() {
@@ -123,7 +127,7 @@ export default {
           this.currentType = "sell";
           break;
       }
-      this.$refs.tabControl1.currentIndex = this.$refs.tabControl2.currentIndex =index;
+      this.$refs.tabControl1.currentIndex = this.$refs.tabControl2.currentIndex = index;
     },
     backTop() {
       this.$refs.scroll.scrollTo(0, 0);
@@ -135,8 +139,8 @@ export default {
     loadMore() {
       this.getHomeGoods(this.currentType);
     },
-    swiperImgLoad(){
-      this.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop-44;
+    swiperImgLoad() {
+      this.tabControlOffsetTop = this.$refs.tabControl2.$el.offsetTop - 44;
     },
     /**
      * 网络请求相关
@@ -160,17 +164,19 @@ export default {
       // 重新绑定上拉加载更多事件
       this.$refs.scroll && this.$refs.scroll.finish();
     },
-    /**
-     * kepp-alive  活跃和离开处理函数
-     */
-    activated() {
-      this.$refs.scroll.scrollTo(0,this.saveY,0);
-      // 刷新一下content高度，防止出现问题
-      this.$refs.scroll.refresh();
-    },
-    deactivated() {
-      this.saveY = this.$refs.scroll.getScrollY();
-    },
+  },
+  /**
+   * kepp-alive  活跃和离开处理函数
+   */
+  activated() {
+    Promise.resolve().then(() => {
+      this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    });
+    // 刷新一下content高度，防止出现问题
+    this.$refs.scroll.refresh();
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY();
   },
 };
 </script>

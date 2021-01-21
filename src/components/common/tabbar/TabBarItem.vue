@@ -21,12 +21,12 @@
     },
     methods: {
       itemClick() {
-        this.$router.replace(this.path)
+        this.$router.replace(this.path).catch(()=>false)
       }
     },
     computed: {
       isActive() {
-        return this.$route.path.indexOf(this.path ) !== -1 ;
+        return this.$route.path.indexOf(this.path) !== -1 ;
       },
       activeStyle() {
         return this.isActive ? {color: this.activeColor} : {}

@@ -2,24 +2,23 @@
   <div>
     <h2>个人中心</h2>
 
-    <div class="wrapper">
-    </div>
+    <div class="wrapper"></div>
   </div>
 </template>
 <script>
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
 export default {
+  name: "Profile",
   data() {
     return {
-      bScroll:null
-    }
+      bScroll: null,
+    };
   },
-  mounted() {
-}
-}
+  mounted() {},
+};
 </script>
 <style scoped>
-.wrapper{
+.wrapper {
   height: 200px;
   background: red;
   overflow: hidden;
