@@ -1,7 +1,7 @@
 <template>
   <div id="detail">
     <!-- 顶部导航 -->
-    <nav-bar class="detail-nav"></nav-bar>
+    <nav-bar class="detail-nav" @titleClick="titleClick" :isComment="commentList" ref="detailNav"></nav-bar>
     <scroll
       class="detail-content"
       ref="scroll"
@@ -20,11 +20,11 @@
         @detailImgLoaded="imgLoad"
       ></detail-goods-info>
       <!-- 商品参数 -->
-      <detail-param-info :paramsInfo="paramsInfo"></detail-param-info>
+      <detail-param-info :paramsInfo="paramsInfo" ref="params"></detail-param-info>
       <!-- 用户评论 -->
-      <detail-comment :commentList="commentList"></detail-comment>
+      <detail-comment :commentList="commentList" ref="comment"></detail-comment>
       <!-- 底部推荐列表展示 -->
-      <goods-list :goods="goodsList">
+      <goods-list :goods="goodsList" ref="recommend">
         <div slot="top" class="hotRecommend">热门推荐</div>
       </goods-list>
     </scroll>
@@ -46,6 +46,7 @@ import GoodsList from "components/context/goodsList/goodsList.vue";
 import BackTop from "components/context/backTop/backTop.vue";
 
 import { mixins } from "common/mixin";
+import { debounce } from "common/utils"
 import {
   getDetail,
   Goods,
@@ -81,6 +82,10 @@ export default {
       commentList: [],
       goodsList: [],
       isShowBack: false,
+      themeTopYs:[],
+      // 获取商品、参数、评论、推荐的offsetTop
+      themeTopY:null,
+      currentIndex:0
     };
   },
   created() {
@@ -106,10 +111,24 @@ export default {
     // 7.请求底部推荐列表
     this._getRecommend();
   },
-  mounted() {},
+  mounted() {
+    this.themeTopY = debounce(()=>{
+      this.themeTopYs = [];
+      this.themeTopYs.push(0);
+      this.$refs.params && this.themeTopYs.push(this.$refs.params.$el.offsetTop-44);
+      this.$refs.comment && this.$refs.comment.$el.offsetTop && this.themeTopYs.push(this.$refs.comment.$el.offsetTop-44);
+      this.$refs.recommend && this.themeTopYs.push(this.$refs.recommend.$el.offsetTop-44);
+      this.themeTopYs.push(Infinity);
+    },50)
+  },
   methods: {
     imgLoad() {
       this.refresh();
+      this.themeTopY();
+    },
+    // 监听导航栏被点击
+    titleClick(index){
+      this.$refs.scroll.scrollTo(0,-this.themeTopYs[index],200)
     },
     _getRecommend() {
       getRecommend().then((res) => {
@@ -123,6 +142,13 @@ export default {
     // 监听页面是否滚动到指定区域
     monitorY(position) {
       this.isShowBack = position.y <= -1500 ? true : false;
+      const length = this.themeTopYs.length;
+      for(let i = 0; i < length - 1 ; i++){
+        if(this.currentIndex !== i && (-position.y >= this.themeTopYs[i] && -position.y < this.themeTopYs[i+1])){
+          this.currentIndex = i;
+          this.$refs.detailNav.currentIndex = i;
+        }
+      }
     },
   },
   destroyed() {

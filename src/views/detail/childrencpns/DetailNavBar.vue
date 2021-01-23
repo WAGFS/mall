@@ -10,7 +10,7 @@
           v-for="(item, index) in title"
           :key="item"
           @click="titleClick(index)"
-          :class="{active:index===currentIndex}"
+          :class="{ active: index === currentIndex }"
         >
           {{ item }}
         </div>
@@ -24,28 +24,46 @@ export default {
   components: {
     NavBar,
   },
+  props: {
+    isComment: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
-      title: ["商品", "参数", "评论", "推荐"],
+      title: [],
       currentIndex: 0,
     };
   },
   methods: {
     titleClick(index) {
       this.currentIndex = index;
+      this.$emit("titleClick", index);
     },
     back() {
       this.$router.go(-1);
     },
   },
+  watch: {
+    isComment(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.title = ["商品", "参数", "推荐"];
+      } else {
+        this.title = ["商品", "参数", "评论", "推荐"];
+      }
+    },
+  },
 };
 </script>
 <style scoped>
-.back{
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
+.back {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 .title {
   display: flex;
@@ -54,7 +72,7 @@ export default {
 .titleItem {
   flex: 1;
 }
-.active{
-    color: var(--color-high-text);
+.active {
+  color: var(--color-high-text);
 }
 </style>
