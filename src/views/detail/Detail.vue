@@ -30,6 +30,8 @@
     </scroll>
     <!-- 回到顶部按钮 -->
     <back-top @click.native="backTop" v-show="isShowBack"></back-top>
+    <!-- 底部导航 -->
+    <detail-bottom-bar></detail-bottom-bar>
   </div>
 </template>
 <script>
@@ -40,6 +42,7 @@ import DetailShopInfo from "./childrencpns/DetailShopInfo.vue";
 import DetailGoodsInfo from "./childrencpns/DetailGoodsInfo.vue";
 import DetailParamInfo from "./childrencpns/DetailParamInfo.vue";
 import DetailComment from "./childrencpns/DetailComment.vue";
+import DetailBottomBar from './childrencpns/DetailBottomNav.vue';
 
 import Scroll from "components/common/scroll/scroll.vue";
 import GoodsList from "components/context/goodsList/goodsList.vue";
@@ -67,6 +70,7 @@ export default {
     DetailComment,
     GoodsList,
     BackTop,
+    DetailBottomBar,
   },
   // 由于this.$refs.scroll在created完成后还未填充数据，所以在mounted中来监听
   // 防止滚动不了的问题
@@ -164,7 +168,7 @@ export default {
   height: 100vh;
 }
 .detail-content {
-  height: calc(100vh - 44px);
+  height: calc(100vh - 44px - 49px);
   overflow: hidden;
 }
 .detail-nav {
