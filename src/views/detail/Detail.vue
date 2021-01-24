@@ -1,7 +1,12 @@
 <template>
   <div id="detail">
     <!-- 顶部导航 -->
-    <nav-bar class="detail-nav" @titleClick="titleClick" :isComment="commentList" ref="detailNav"></nav-bar>
+    <nav-bar
+      class="detail-nav"
+      @titleClick="titleClick"
+      :isComment="commentList"
+      ref="detailNav"
+    ></nav-bar>
     <scroll
       class="detail-content"
       ref="scroll"
@@ -20,7 +25,10 @@
         @detailImgLoaded="imgLoad"
       ></detail-goods-info>
       <!-- 商品参数 -->
-      <detail-param-info :paramsInfo="paramsInfo" ref="params"></detail-param-info>
+      <detail-param-info
+        :paramsInfo="paramsInfo"
+        ref="params"
+      ></detail-param-info>
       <!-- 用户评论 -->
       <detail-comment :commentList="commentList" ref="comment"></detail-comment>
       <!-- 底部推荐列表展示 -->
@@ -31,7 +39,7 @@
     <!-- 回到顶部按钮 -->
     <back-top @click.native="backTop" v-show="isShowBack"></back-top>
     <!-- 底部导航 -->
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
   </div>
 </template>
 <script>
@@ -42,14 +50,14 @@ import DetailShopInfo from "./childrencpns/DetailShopInfo.vue";
 import DetailGoodsInfo from "./childrencpns/DetailGoodsInfo.vue";
 import DetailParamInfo from "./childrencpns/DetailParamInfo.vue";
 import DetailComment from "./childrencpns/DetailComment.vue";
-import DetailBottomBar from './childrencpns/DetailBottomNav.vue';
+import DetailBottomBar from "./childrencpns/DetailBottomNav.vue";
 
 import Scroll from "components/common/scroll/scroll.vue";
 import GoodsList from "components/context/goodsList/goodsList.vue";
 import BackTop from "components/context/backTop/backTop.vue";
 
 import { mixins } from "common/mixin";
-import { debounce } from "common/utils"
+import { debounce } from "common/utils";
 import {
   getDetail,
   Goods,
@@ -86,10 +94,10 @@ export default {
       commentList: [],
       goodsList: [],
       isShowBack: false,
-      themeTopYs:[],
+      themeTopYs: [],
       // 获取商品、参数、评论、推荐的offsetTop
-      themeTopY:null,
-      currentIndex:0
+      themeTopY: null,
+      currentIndex: 0,
     };
   },
   created() {
@@ -116,14 +124,18 @@ export default {
     this._getRecommend();
   },
   mounted() {
-    this.themeTopY = debounce(()=>{
+    this.themeTopY = debounce(() => {
       this.themeTopYs = [];
       this.themeTopYs.push(0);
-      this.$refs.params && this.themeTopYs.push(this.$refs.params.$el.offsetTop-44);
-      this.$refs.comment && this.$refs.comment.$el.offsetTop && this.themeTopYs.push(this.$refs.comment.$el.offsetTop-44);
-      this.$refs.recommend && this.themeTopYs.push(this.$refs.recommend.$el.offsetTop-44);
+      this.$refs.params &&
+        this.themeTopYs.push(this.$refs.params.$el.offsetTop - 44);
+      this.$refs.comment &&
+        this.$refs.comment.$el.offsetTop &&
+        this.themeTopYs.push(this.$refs.comment.$el.offsetTop - 44);
+      this.$refs.recommend &&
+        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop - 44);
       this.themeTopYs.push(Infinity);
-    },50)
+    }, 50);
   },
   methods: {
     imgLoad() {
@@ -131,8 +143,8 @@ export default {
       this.themeTopY();
     },
     // 监听导航栏被点击
-    titleClick(index){
-      this.$refs.scroll.scrollTo(0,-this.themeTopYs[index],200)
+    titleClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200);
     },
     _getRecommend() {
       getRecommend().then((res) => {
@@ -147,12 +159,29 @@ export default {
     monitorY(position) {
       this.isShowBack = position.y <= -1500 ? true : false;
       const length = this.themeTopYs.length;
-      for(let i = 0; i < length - 1 ; i++){
-        if(this.currentIndex !== i && (-position.y >= this.themeTopYs[i] && -position.y < this.themeTopYs[i+1])){
+      for (let i = 0; i < length - 1; i++) {
+        if (
+          this.currentIndex !== i &&
+          -position.y >= this.themeTopYs[i] &&
+          -position.y < this.themeTopYs[i + 1]
+        ) {
           this.currentIndex = i;
           this.$refs.detailNav.currentIndex = i;
         }
       }
+    },
+    // 监听添加到购物车
+    addToCart() {
+      const production = {};
+      production.image = this.imgList[0];
+      production.price = this.g.realPrice;
+      production.title = this.g.title;
+      production.desc = this.g.desc;
+      production.iid = this.iid;
+      production.count = 1;
+
+      // this.$store.commit("addCart", production);
+      this.$store.dispatch("addCart", production);
     },
   },
   destroyed() {

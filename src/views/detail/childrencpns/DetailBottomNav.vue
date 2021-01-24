@@ -15,13 +15,19 @@
       </div>
     </div>
     <div class="bar-item bar-right">
-      <div class="cart">加入购物车</div>
+      <div class="cart" @click="addToCart">加入购物车</div>
       <div class="buy">购买</div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  methods: {
+    addToCart(){
+      this.$emit('addToCart')
+    }
+  },
+};
 </script>
 <style scoped>
 .bottom-bar {
@@ -33,7 +39,6 @@ export default {};
   bottom: 0;
   display: flex;
   text-align: center;
-  line-height: 49px;
   box-shadow: 0 1px 5px rgba(0,0,0,.3);
 }
 .bar-item{
@@ -45,6 +50,7 @@ export default {};
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-flow: column wrap;
 }
 .bar-left{
     font-size: 13px;
@@ -54,7 +60,7 @@ export default {};
     background-size: 100%;
     width: 22px;
     height: 22px;
-    margin-right: 3px;
+    margin-bottom: 2px;
 }
 .service{
     background-position: 0 -53px;
