@@ -23,7 +23,7 @@ export default {
     border: 2px solid #aaa;
 }
 .active{
-    background: red;
-    border-color: #f00;
+    background: #FF708A;
+    border-color: #FF708A;
 }
 </style>

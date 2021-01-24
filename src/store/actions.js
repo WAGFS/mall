@@ -1,8 +1,9 @@
 import {
-    ADD_COUNTER,
-    ADD_TO_CART
-  } from './mutations-type'
-  
+  ADD_COUNTER,
+  ADD_TO_CART,
+  CHANGE_CHECKED
+} from './mutations-type'
+
 
 export default {
   addCart(context, payload) {
@@ -12,5 +13,15 @@ export default {
     } else {
       context.commit(ADD_TO_CART, payload)
     }
+  },
+  changeAllChecked({
+    state,
+    commit
+  },payload) {
+    let newCartList = state.cartList.map(item => {
+      item.checked = !payload
+      return item;
+    });
+    commit(CHANGE_CHECKED, newCartList)
   }
 }
