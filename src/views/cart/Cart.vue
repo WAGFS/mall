@@ -1,8 +1,11 @@
 <template>
   <div>
+    <!-- 导航栏 -->
     <nav-bar class="nav-bar">
       <div slot="center">购物车({{ length }})</div>
     </nav-bar>
+    <!-- 商品列表 -->
+    <cart-list ref="cartList"></cart-list>
   </div>
 </template>
 <script>
@@ -10,8 +13,10 @@ import NavBar from "components/common/navbar/NavBar.vue";
 
 import { mapGetters } from "vuex";
 
+import CartList from './childrenCpns/CartList.vue';
+
 export default {
-  components: { NavBar },
+  components: { NavBar,CartList },
   name: "Cart",
   computed: {
     // 两种用法
@@ -19,10 +24,9 @@ export default {
     // ...mapGetters(['cartLength','cartList'])
     // 2.对象形式 使用自己定义的名称
     ...mapGetters({
-      length: "cartLength",
-      cart: "cartList",
+      length: "cartLength"
     }),
-  },
+  }
 };
 </script>
 <style scoped>
