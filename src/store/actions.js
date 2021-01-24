@@ -1,7 +1,7 @@
 import {
   ADD_COUNTER,
   ADD_TO_CART,
-  CHANGE_CHECKED
+  CHANGE_ALL_CHECKED
 } from './mutations-type'
 
 
@@ -22,6 +22,6 @@ export default {
       item.checked = !payload
       return item;
     });
-    commit(CHANGE_CHECKED, newCartList)
+    commit(CHANGE_ALL_CHECKED, newCartList)
   }
 }

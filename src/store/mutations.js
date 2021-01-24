@@ -1,7 +1,7 @@
 import {
   ADD_COUNTER,
   ADD_TO_CART,
-  CHANGE_CHECKED
+  CHANGE_ALL_CHECKED
 } from './mutations-type'
 
 export default {
@@ -12,7 +12,7 @@ export default {
     payload.checked = true;
     state.cartList.push(payload);
   },
-  [CHANGE_CHECKED](state,payload){
+  [CHANGE_ALL_CHECKED](state,payload){
     state.cartList = payload;
   }
 }
