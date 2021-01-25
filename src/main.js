@@ -5,8 +5,10 @@ import store from './store'
 // 导入toast插件
 import toast from 'components/common/toast'
 
-let attachFastClick = require('fastclick');
-attachFastClick(document.body);
+// 解决移动端300ms延迟问题
+import attachFastClick from 'fastclick'
+// let attachFastClick = require('fastclick');
+attachFastClick.attach(document.body);
 
 Vue.config.productionTip = false
 
