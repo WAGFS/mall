@@ -1,12 +1,14 @@
 <template>
   <div class="bottom-nav">
     <div class="checked-area">
-      <check-button class="check-button" @click.native="allChecked" :is-checked="isAll"></check-button>
+      <check-button
+        class="check-button"
+        @click.native="allChecked"
+        :is-checked="isAll"
+      ></check-button>
       <span>全选</span>
     </div>
-    <div class="totalPrice">
-      <span>合计:</span>￥{{ totalPrice }}
-    </div>
+    <div class="totalPrice"><span>合计:</span>￥{{ totalPrice }}</div>
     <div class="calclutate">结算{{ calclutate }}</div>
   </div>
 </template>
@@ -14,11 +16,16 @@
 import CheckButton from "components/context/checkButton/CheckButton";
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+        selectAll:null
+    };
+  },
   components: {
     CheckButton,
   },
   computed: {
-    ...mapGetters(["cartList","cartLength"]),
+    ...mapGetters(["cartList"]),
     totalPrice() {
       return this.cartList
         .filter((item) => item.checked)
@@ -29,14 +36,37 @@ export default {
       const length = this.cartList.filter((item) => item.checked).length;
       return length === 0 ? "" : `(${length})`;
     },
-    isAll(){
-        return this.cartList.filter(item => item.checked).length === this.cartLength;
-    }
+    isAll() {
+      if (this.cartList.length === 0) return false;
+      return !this.cartList.some((item) => !item.checked);
+    },
+  },
+  mounted() {
+      this.selectAll = this.throttl(this.$store.dispatch,100)
   },
   methods: {
-      allChecked(){
-          this.$store.dispatch('changeAllChecked',this.isAll)
-      }
+    allChecked() {
+    // 节流，防止用户点击全选按钮操作频率过快导致页面更新混乱
+    this.selectAll("changeAllChecked", this.isAll)
+
+      // if(this.isAll){
+      //     this.cartList.forEach(item => {item.checked = false})
+      // }else{
+      //     this.cartList.forEach(item => {item.checked = true})
+      // }
+    },
+    // 节流
+    throttl(fn, delay) {
+      let isOver;
+      return function (...args) {
+        if (isOver) return;
+        fn(...args);
+        isOver = true;
+        setTimeout(() => {
+          isOver = false;
+        }, delay);
+      };
+    },
   },
 };
 </script>
@@ -57,31 +87,31 @@ export default {
   height: 100%;
   min-width: 60px;
   font-size: 13px;
-  color:#78787D;
+  color: #78787d;
 }
 .check-button {
   margin-right: 5px;
 }
-.totalPrice{
-    flex: 1;
-    text-align: right;
-    padding-right: 10px;
-    font-size: 14px;
-    color: #ff4769;
-    height: 30px;
-    line-height: 30px;
+.totalPrice {
+  flex: 1;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 14px;
+  color: #ff4769;
+  height: 30px;
+  line-height: 30px;
 }
-.totalPrice > span{
-    color:#333;
+.totalPrice > span {
+  color: #333;
 }
-.calclutate{
-    min-width: 90px;
-    height: 100%;
-    background-image:-moz-linear-gradient(to bottom,#FF99AC,#FF708A) ;
-    color: #fff;
-    border-radius: 15px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 14px;
+.calclutate {
+  min-width: 90px;
+  height: 100%;
+  background-image: -moz-linear-gradient(to bottom, #ff99ac, #ff708a);
+  color: #fff;
+  border-radius: 15px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
 }
 </style>
