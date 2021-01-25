@@ -7,8 +7,13 @@ import toast from 'components/common/toast'
 
 // 解决移动端300ms延迟问题
 import attachFastClick from 'fastclick'
-// let attachFastClick = require('fastclick');
 attachFastClick.attach(document.body);
+
+// 使用图片懒加载
+import imgLazy from 'vue-lazyload';
+Vue.use(imgLazy,{
+  loading:require('./assets/img/common/placeholder.png')
+})
 
 Vue.config.productionTip = false
 
