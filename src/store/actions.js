@@ -7,17 +7,25 @@ import {
 
 export default {
   addCart(context, payload) {
-    let oldProduction = context.state.cartList.find(item => item.iid === payload.iid);
-    if (oldProduction) {
-      context.commit(ADD_COUNTER, oldProduction)
-    } else {
-      context.commit(ADD_TO_CART, payload)
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        let oldProduction = context.state.cartList.find(item => item.iid === payload.iid);
+        if (oldProduction) {
+          context.commit(ADD_COUNTER, oldProduction)
+          resolve('购物车内商品数量+1')
+        } else {
+          context.commit(ADD_TO_CART, payload)
+          resolve('加入成功')
+        }
+      } catch (err) {
+        reject('加入购物车失败')
+      }
+    })
   },
   changeAllChecked({
     state,
     commit
-  },payload) {
+  }, payload) {
     let newCartList = state.cartList.map(item => {
       item.checked = !payload
       return item;

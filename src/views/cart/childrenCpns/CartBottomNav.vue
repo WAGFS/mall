@@ -9,7 +9,7 @@
       <span>全选</span>
     </div>
     <div class="totalPrice"><span>合计:</span>￥{{ totalPrice }}</div>
-    <div class="calclutate">结算{{ calclutate }}</div>
+    <div class="calclutate" @click='calcClick'>结算{{ calclutate }}</div>
   </div>
 </template>
 <script>
@@ -47,13 +47,7 @@ export default {
   methods: {
     allChecked() {
     // 节流，防止用户点击全选按钮操作频率过快导致页面更新混乱
-    this.selectAll("changeAllChecked", this.isAll)
-
-      // if(this.isAll){
-      //     this.cartList.forEach(item => {item.checked = false})
-      // }else{
-      //     this.cartList.forEach(item => {item.checked = true})
-      // }
+    this.selectAll("changeAllChecked", this.isAll);
     },
     // 节流
     throttl(fn, delay) {
@@ -67,6 +61,10 @@ export default {
         }, delay);
       };
     },
+    // 点击结算按钮
+    calcClick(){
+            this.$toast.show('结算功能还在开发中，敬请期待...')
+    }
   },
 };
 </script>

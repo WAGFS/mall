@@ -181,7 +181,14 @@ export default {
       production.count = 1;
 
       // this.$store.commit("addCart", production);
-      this.$store.dispatch("addCart", production);
+      this.$store
+        .dispatch("addCart", production)
+        .then((res) => {
+          this.$toast.show(res);
+        })
+        .catch((err) => {
+          this.$toast.show(err);
+        });
     },
   },
   destroyed() {
