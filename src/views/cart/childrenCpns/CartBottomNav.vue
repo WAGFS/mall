@@ -105,7 +105,7 @@ export default {
 .calclutate {
   min-width: 90px;
   height: 100%;
-  background-image: -moz-linear-gradient(to bottom, #ff99ac, #ff708a);
+  background-image: linear-gradient(to bottom, #ff99ac, #ff708a);
   color: #fff;
   border-radius: 15px;
   line-height: 30px;
