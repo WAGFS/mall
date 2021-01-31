@@ -3,51 +3,53 @@
     <nav-bar class="p-navbar">
       <div slot="center">超级市场</div>
     </nav-bar>
-     <!--1.单独封装一个组件: 利用slot知识点-->
-    <UserInfo></UserInfo>
-
-    <!--2.没有单独封装: 不同的地方太多, 需要传过多的参数-->
-    <section class="account">
-      <div class="account-item">
-        <div class="number">
-          <span class="balance">0.00</span>元
-        </div>
-        <div class="account-info">我的余额</div>
-      </div>
-      <div class="account-item">
-        <div class="number">
-          <span class="balance">0</span>个
-        </div>
-        <div class="account-info">我的优惠</div>
-      </div>
-      <div class="account-item">
-        <div class="number">
-          <span class="balance">0</span>分
-        </div>
-        <div class="account-info">我的积分</div>
-      </div>
-    </section>
-
+    <!--单独封装一个组件: 利用slot知识点-->
+    <user-info></user-info>
+    <!-- 账户组件 -->
+    <account></account>
+    <!-- 信息、商城、积分等模块 -->
+    <list-view :list-data="orderList" class="order-list"></list-view>
+    <list-view :list-data="serviceList" class="service-list"></list-view>
   </div>
 </template>
 <script>
-import NavBar from 'components/common/navbar/NavBar.vue';
+import NavBar from "components/common/navbar/NavBar.vue";
+
+import UserInfo from "./childrenCpns/UserInfo";
+import Account from "./childrenCpns/Account";
+import ListView from './childrenCpns/ListView'
 export default {
-  components: { NavBar },
+  components: { NavBar, UserInfo, Account, ListView },
   name: "Profile",
   data() {
     return {
+      orderList: [
+        { src: require("assets/img/profile/message.svg"), info: "我的消息" },
+        { src: require("assets/img/profile/shopping.svg"), info: "积分商城" },
+        { src: require("assets/img/profile/vip.svg"), info: "会员卡" },
+      ],
+      serviceList: [
+        { src: require("assets/img/profile/cart.svg"), info: "我的购物车" },
+        { src: require("assets/img/profile/pointer.svg"), info: "下载购物APP" },
+      ],
     };
   },
   mounted() {},
 };
 </script>
 <style scoped>
-.p-navbar{
-  background: var(--color-tint);
+#profile {
+  background-color: #f2f2f2;
+}
+
+.p-navbar {
+  background-color: var(--color-tint);
+  font-weight: 700;
   color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 0.1em;
+}
+
+.order-list,
+.service-list {
+  margin-top: 12px;
 }
 </style>
