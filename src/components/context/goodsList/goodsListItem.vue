@@ -1,10 +1,10 @@
 <template>
   <div class="goodsItem" @click="toDetail">
-    <img v-lazy="goodsInfo.image || goodsInfo.show.img" :alt="goodsInfo.title" @load="imgLoad"/>
+    <img v-lazy="goodsInfo.image || goodsInfo.img || goodsInfo.show.img " :alt="goodsInfo.title" @load="imgLoad"/>
     <div>
-      <p class="title">{{ goodsInfo.title }}</p>
-      <span class="price">￥{{ goodsInfo.price }}</span>
-      <span class="collect">{{ goodsInfo.cfav }}</span>
+      <p class="title">{{ goodsInfo.title || '预售商品' }}</p>
+      <span class="price">￥{{ goodsInfo.price || 200}}</span>
+      <span class="collect">{{ goodsInfo.cfav || 3000}}</span>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   width: 48%;
   text-align: center;
   font-size: 14px;
-  padding: 5px;
+  padding:8px 5px;
 }
 .goodsItem img {
   width: 100%;

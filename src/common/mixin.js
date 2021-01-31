@@ -4,7 +4,7 @@ export const mixins = {
   data() {
     return {
       refresh: null,
-      itemImgLoad:null
+      itemImgLoad:function(){}
     }
   },
   mounted() {
