@@ -43,14 +43,14 @@
   </div>
 </template>
 <script>
-import NavBar from "./childrencpns/DetailNavBar";
-import DetailSwiper from "./childrencpns/DetailSwiper.vue";
-import DetailBaseInfo from "./childrencpns/DetailBaseInfo.vue";
-import DetailShopInfo from "./childrencpns/DetailShopInfo.vue";
-import DetailGoodsInfo from "./childrencpns/DetailGoodsInfo.vue";
-import DetailParamInfo from "./childrencpns/DetailParamInfo.vue";
-import DetailComment from "./childrencpns/DetailComment.vue";
-import DetailBottomBar from "./childrencpns/DetailBottomNav.vue";
+import NavBar from "./childrenCpns/DetailNavBar";
+import DetailSwiper from "./childrenCpns/DetailSwiper.vue";
+import DetailBaseInfo from "./childrenCpns/DetailBaseInfo.vue";
+import DetailShopInfo from "./childrenCpns/DetailShopInfo.vue";
+import DetailGoodsInfo from "./childrenCpns/DetailGoodsInfo.vue";
+import DetailParamInfo from "./childrenCpns/DetailParamInfo.vue";
+import DetailComment from "./childrenCpns/DetailComment.vue";
+import DetailBottomBar from "./childrenCpns/DetailBottomNav.vue";
 
 import Scroll from "components/common/scroll/scroll.vue";
 import GoodsList from "components/context/goodsList/goodsList.vue";

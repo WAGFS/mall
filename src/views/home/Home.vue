@@ -41,9 +41,9 @@
   </div>
 </template>
 <script>
-import HomeSwiper from "./childrencpns/HomeSwiper.vue";
-import FeatureView from "./childrencpns/FeatureView";
-import RecommendView from "./childrencpns/RecommendView.vue";
+import HomeSwiper from "./childrenCpns/HomeSwiper.vue";
+import FeatureView from "./childrenCpns/FeatureView";
+import RecommendView from "./childrenCpns/RecommendView.vue";
 
 import NavBar from "components/common/navbar/NavBar.vue";
 import TabControl from "components/context/tabControl/tabControl.vue";
